@@ -1,0 +1,197 @@
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+@import 'base/reset';
+
+// Layout
+#webgl-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: $z-index-canvas;
+    pointer-events: none;
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%); // Dark Slate Gradient
+}
+
+.container {
+    max-width: $container-width;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $header-height;
+    z-index: $z-index-header;
+    background: rgba(15, 23, 42, 0.7); // Slate-900 transparent
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+
+    .container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: #f8fafc; // Slate-50
+        letter-spacing: -0.02em;
+    }
+
+    .main-nav ul {
+        display: flex;
+        gap: 2rem;
+
+        li a {
+            color: #cbd5e1; // Slate-300
+            font-weight: 500;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: #fff;
+            }
+        }
+    }
+}
+
+.site-main {
+    padding-top: $header-height;
+    position: relative;
+    z-index: $z-index-content;
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    perspective: 1000px;
+
+    &__content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+    }
+
+    &__title {
+        font-size: 3.5rem;
+
+        @include respond-to('md') {
+            font-size: 5rem;
+        }
+
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        color: #f8fafc;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+        // Subtle gradient text
+        background: linear-gradient(to bottom right, #fff, #94a3b8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    &__subtitle {
+        font-size: 1.25rem;
+        color: #cbd5e1; // Slate-300
+        margin-bottom: 2.5rem;
+        line-height: 1.6;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+
+        // Glass pill effect
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+}
+
+.btn {
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1.1rem;
+
+    &--primary {
+        background: #f8fafc;
+        color: #0f172a;
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+            background: #fff;
+        }
+    }
+}
+
+.section {
+    padding: 120px 0;
+
+    &__title {
+        font-size: 2.5rem;
+        margin-bottom: 4rem;
+        text-align: center;
+        color: #f8fafc;
+    }
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+}
+
+.card {
+    background: rgba(30, 41, 59, 0.4); // Slate-800 transparent
+    padding: 3rem;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+
+    &:hover {
+        transform: translateY(-10px);
+        background: rgba(30, 41, 59, 0.6);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    h3 {
+        margin-bottom: 1rem;
+        color: #f8fafc;
+        font-size: 1.5rem;
+    }
+
+    p {
+        color: #94a3b8; // Slate-400
+        line-height: 1.6;
+    }
+}
+
+.site-footer {
+    padding: 4rem 0;
+    text-align: center;
+    color: #64748b; // Slate-500
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: #020617; // Slate-950
+}
