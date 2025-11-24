@@ -60,4 +60,69 @@ function automation_studio_customize_register( $wp_customize ) {
     ) ) );
 }
 add_action( 'customize_register', 'automation_studio_customize_register' );
+
+// Register Custom Categories for Blog
+function automation_studio_register_categories() {
+    // Create default categories if they don't exist
+    $categories = array(
+        'CRM Інтеграція' => 'Професійна інтеграція CRM систем для автоматизації продажів',
+        'Чат-боти' => 'Розробка та налаштування чат-ботів для бізнесу',
+        'Кейси' => 'Реальні проекти та історії успіху наших клієнтів',
+        'Гайди' => 'Покрокові інструкції та корисні поради з автоматизації'
+    );
+
+    foreach ($categories as $name => $description) {
+        if (!term_exists($name, 'category')) {
+            wp_insert_term(
+                $name,
+                'category',
+                array(
+                    'description' => $description,
+                    'slug' => sanitize_title($name)
+                )
+            );
+        }
+    }
+}
+add_action('init', 'automation_studio_register_categories');
+
+// Rank Math SEO Integration
+function automation_studio_rankmath_setup() {
+    // Add Rank Math support for custom post types if needed
+    add_theme_support('rank-math');
+    
+    // Enable breadcrumbs
+    add_theme_support('rank-math-breadcrumbs');
+}
+add_action('after_setup_theme', 'automation_studio_rankmath_setup');
+
+// Add Schema.org markup for Articles
+function automation_studio_add_schema() {
+    if (is_single()) {
+        ?>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "<?php echo esc_js(get_the_title()); ?>",
+            "author": {
+                "@type": "Organization",
+                "name": "Automation Studio"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Automation Studio",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "<?php echo esc_url(get_template_directory_uri() . '/assets/logo.png'); ?>"
+                }
+            },
+            "datePublished": "<?php echo get_the_date('c'); ?>",
+            "dateModified": "<?php echo get_the_modified_date('c'); ?>"
+        }
+        </script>
+        <?php
+    }
+}
+add_action('wp_head', 'automation_studio_add_schema');
 ?>
