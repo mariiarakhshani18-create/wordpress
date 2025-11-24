@@ -72,6 +72,38 @@ export class SceneManager {
 
         this.particles = new THREE.Points(particlesGeometry, particlesMaterial);
         this.scene.add(this.particles);
+
+        // Background floating shapes
+        this.floatingShapes = [];
+        const shapeGeometry = new THREE.IcosahedronGeometry(0.4, 0);
+        const shapeMaterial = new THREE.MeshStandardMaterial({
+            color: 0x475569, // Slate-600
+            wireframe: true,
+            transparent: true,
+            opacity: 0.15,
+            roughness: 0.4,
+            metalness: 0.5
+        });
+
+        for (let i = 0; i < 15; i++) {
+            const mesh = new THREE.Mesh(shapeGeometry, shapeMaterial);
+
+            // Random position spread
+            mesh.position.x = (Math.random() - 0.5) * 20;
+            mesh.position.y = (Math.random() - 0.5) * 20;
+            mesh.position.z = (Math.random() - 0.5) * 10 - 5; // Push back slightly
+
+            // Random rotation speed
+            mesh.userData = {
+                rotSpeedX: (Math.random() - 0.5) * 0.002,
+                rotSpeedY: (Math.random() - 0.5) * 0.002,
+                floatSpeed: (Math.random() * 0.005) + 0.002,
+                initialY: mesh.position.y
+            };
+
+            this.scene.add(mesh);
+            this.floatingShapes.push(mesh);
+        }
     }
 
     onResize() {
@@ -134,6 +166,17 @@ export class SceneManager {
         if (this.particles) {
             this.particles.rotation.y -= 0.0002;
             this.particles.material.opacity = 0.3 + Math.sin(time * 0.5) * 0.1;
+        }
+
+        // Animate floating shapes
+        if (this.floatingShapes) {
+            this.floatingShapes.forEach((mesh, i) => {
+                mesh.rotation.x += mesh.userData.rotSpeedX;
+                mesh.rotation.y += mesh.userData.rotSpeedY;
+
+                // Gentle floating motion
+                mesh.position.y = mesh.userData.initialY + Math.sin(time * mesh.userData.floatSpeed + i) * 0.5;
+            });
         }
 
         this.renderer.render(this.scene, this.camera);
